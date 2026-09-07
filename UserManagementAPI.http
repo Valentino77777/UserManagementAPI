@@ -1,0 +1,78 @@
+@UserManagementAPI_HostAddress = http://localhost:5113
+@AuthToken = dev-local-token
+
+# List all users
+GET {{UserManagementAPI_HostAddress}}/api/users
+Accept: application/json
+Authorization: Bearer {{AuthToken}}
+
+###
+
+# Get a user by ID
+GET {{UserManagementAPI_HostAddress}}/api/users/1
+Accept: application/json
+Authorization: Bearer {{AuthToken}}
+
+###
+
+# Create a user
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+	"name": "Grace Hopper",
+	"email": "grace@example.com"
+}
+
+###
+
+# Update a user
+PUT {{UserManagementAPI_HostAddress}}/api/users/1
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+	"name": "Ada Byron Lovelace",
+	"email": "ada.lovelace@example.com"
+}
+
+###
+
+# Delete a user
+DELETE {{UserManagementAPI_HostAddress}}/api/users/2
+Accept: application/json
+Authorization: Bearer {{AuthToken}}
+
+###
+
+# Confirm the deleted user is no longer available
+GET {{UserManagementAPI_HostAddress}}/api/users/2
+Accept: application/json
+Authorization: Bearer {{AuthToken}}
+
+###
+
+# Validation example: this should return 400 Bad Request
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+	"name": "",
+	"email": "not-an-email"
+}
+
+###
+
+# Authentication example: missing Authorization header, should return 401 Unauthorized
+GET {{UserManagementAPI_HostAddress}}/api/users
+Accept: application/json
+
+###
+
+# Authentication example: invalid token, should return 401 Unauthorized
+GET {{UserManagementAPI_HostAddress}}/api/users
+Accept: application/json
+Authorization: Bearer not-the-right-token
+
